@@ -39,11 +39,4 @@ mean(x = vec_three[vec_three > 20 & vec_three < 60])
 #calculate sum of numbers > 48
 sum(x = vec_three[vec_three > 48])
 
-#create a function returning the minimum and maximum values of a vector
-function_two <- function(x){
-  minimum_maximum = c(sort(x)[1], sort(x, decreasing = TRUE)[1])
-  return(minimum_maximum )
-}
-#verify the function 
-function_two(0:10)
 #make some changes
