@@ -30,13 +30,4 @@ vec_two <- c("mean" = mean(x = new_value), "sd" = sd(x = new_value), "se" = se(x
 #look at vector_two
 vec_two
 
-#create vector of a sequence number from 15 to 100
-vec_three <- 15:100
-#look at the vector
-vec_three
-#calculate mean of numbers >20 and <60
-mean(x = vec_three[vec_three > 20 & vec_three < 60])
-#calculate sum of numbers > 48
-sum(x = vec_three[vec_three > 48])
-
 #make some changes
