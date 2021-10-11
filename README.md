@@ -1,5 +1,5 @@
 # bioinformatics
 R course practice
 
-## Auther
+## Author
 Lingyun Yang
