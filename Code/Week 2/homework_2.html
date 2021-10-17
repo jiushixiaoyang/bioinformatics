@@ -1,0 +1,222 @@
+---
+title: "**R Course:** <br> Homework 2 <br> *My Cheat Sheet*"
+author: "Lingyun Yang"
+
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    number_sections: true
+
+---
+# Vectors
+
+create a vector: *c()*
+
+## Numeric vectors
+
+```{r}
+a <- c(1, 2, 3)
+a
+```
+
+## Character vectors
+
+```{r}
+b <- c('o', 'f', 'h', 'u')
+b
+```
+
+*cannot include both numbers and characters
+
+```{r}
+c("a", 2)
+```
+
+## Logical vector
+
+```{r}
+d <- c("TRUE", "FALSE")# It can automatically find data which adhere to a set of arguments you specify
+x <- runif(n = 10, min = 0, max = 20)
+x
+x > 5
+```
+
+### Logical operators
+
+|Logical operator|Code|Example|
+|:-----|:-----|:-----|
+|Equal to|==|c(1:5) == 2|
+|Not equal to|!=|c(1:5) == 3|
+|Less than|<|4 < 5|
+|More than|>|3 > 5|
+|Less than or equal to|<=|c(1:5) <= 3|
+|More than or equal to|>=|c(1:5) >= 2|
+|Or|&#124;|x <- c(1:5) ; x > 3 | x < 2|
+|Within|%in%|1:10 %in% c(1,3,5,9)|
+
+using *&#124*; take place of |
+
+## Combine multiple vectors
+
+(1
+
+```{r}
+g <- c(10, 4)#make a new vector
+c(a , g)
+```
+
+(2
+
+```{r}
+g <- c(10, a, 4)
+g
+```
+
+## Add name
+
+(1
+
+```{r}
+my_vec <- c("a" = 1, "d" = 3, "b" = 2)
+my_vec
+```
+
+(2
+
+```{r}
+my_vec <- c(1, 3, 2)
+names(my_vec) <- c("a", "d", "b")
+my_vec
+```
+
+## Select vector elements
+
+use*[ ]*
+
+(1 By position
+
+```{r}
+my_vec[2]#The second element.
+```
+
+```{r}
+my_vec[-2]#All but the second.
+```
+
+```{r}
+my_vec[1:3]#Elements one to three.
+```
+
+```{r}
+my_vec[-(1:2)]#All elements except one to three.
+```
+
+```{r}
+my_vec[c(2, 3)]#Elements two and three.
+```
+
+(2 By value
+
+```{r}
+my_vec[my_vec == 2]#Elements which are equal to 2.
+```
+
+```{r}
+my_vec[my_vec > 0]#All elements more than zero.
+```
+
+```{r}
+my_vec[my_vec %in% c(1, 2)]#Elements in the set 1, 2.
+```
+
+(3 Named Vectors
+
+```{r}
+my_vec["d"]#Element with name ‘d'
+```
+
+## Checking vector
+
+```{r}
+is.numeric(1:5)
+```
+
+```{r}
+is.character(letters[1:5])
+```
+
+```{r}
+is.logical(c(TRUE, 1))
+```
+
+## Factors
+
+```{r}
+##student names
+class_names <- c("James", "John", "Mary", "Linda", "Susan", "Mary", "Charles", "John", "James")
+
+##convert the student names to a factor
+class_names <- as.factor(class_names)
+
+##look at the factor
+class_names
+
+##look at only the levels
+levels(class_names)
+```
+
+# Functions
+
+## Getting help
+
+use*?*
+
+```{r, eval = FALSE}
+?mean()
+```
+
+<center>
+
+![Description of
+Mean](Screenshot%202021-10-11%20235440.png){width="66%"}
+
+</center>
+
+## Writing function
+
+use *function()*
+
+```{r}
+se <- function(x){
+
+   std_er<-sd(x)/sqrt(length(x))
+
+   return(std_er)
+}
+```
+
+## Useful functions
+
+|Function|Call|
+|:-----|:------|
+|Create a vector|c()|
+|Return the length of a vector|length()|
+|Check the names of a vector or add names to a vector|names()|
+|Sort a vector by value|sort()|
+|Reverse a vector by value|rev()|
+|Make a vector into a factor|as.factor()|
+|Generate random numbers from a uniform distribution|runif()|
+|Add up the values of a vector|sum()|
+|Calculate the average of the values of a vector|mean()|
+|Round a vector to the nearest ….|round()|
+|Square root of the values in a vector|sqrt()|
+|Create a function|function()|
+|Return the desired object from a function|return()|
+|An integer sequence|2:6|
+|A complex sequence|seq()|
+|Clear R’s memory|rm(list = ls())|
+|Random numbers from a uniform distribution|rnorm()|
+
+
