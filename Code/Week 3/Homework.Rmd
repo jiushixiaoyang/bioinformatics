@@ -1,0 +1,69 @@
+---
+title: "**R Course:** <br> Homework 3 <br> *Population Counts for Endangered Species*"
+author: "Lingyun Yang"
+
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    number_sections: true
+
+---
+#Loading data into R
+##Installing and loading packages
+use the install packages function from CRAN to install the package "devtools". dependencies = TRUE tells R to install any other packages that devtools relies on which you haven't already installed.
+```{r}
+install.packages("devtools", dependencies = TRUE)
+```
+load the devtools package.
+```{r}
+library("devtools")
+```
+install the "vroom" package from Github.
+```{r}
+install_github("r-lib/vroom")
+```
+tell R to use the "vroom()" function from the vroom package
+```{r}
+vroom::vroom()
+```
+load vroom into R session (only need to do this once)
+```{r}
+library(vroom)
+```
+##Loading data on Github
+use vroom to read in some data from github
+```{r}
+species_dat1 <- vroom("https://raw.githubusercontent.com/jiushixiaoyang/bioinformatics/main/Code/Workshop%203/to_sort_pop_1.csv")
+species_dat1
+species_dat2 <- vroom("https://raw.githubusercontent.com/jiushixiaoyang/bioinformatics/main/Code/Workshop%203/to_sort_pop_2.csv")
+species_dat2
+```
+#Data handing
+##Installing package
+install tidyverse package
+```{r}
+install.packages("tidyverse", dependencies = TRUE)
+```
+load full_join() function
+```{r}
+library(tidyverse)
+```
+##Summarising data
+join two data
+```{R}
+species = species_dat1 %>% 
+full_join(species_dat2, by = c("species", "primary_threat", "secondary_threat", "tertiary_threat")) %>%
+#reshape them from wide to long format 
+pivot_longer(cols = -c(species:tertiary_threat),
+               names_to = "Date",
+               values_to = "abundance",
+#drop missing values
+               values_drop_na = T) %>%
+#separte column "Date" into "population" and "date"
+separate(Date, into = c("population", "date"), sep = 6)
+species
+```
+ 
+
