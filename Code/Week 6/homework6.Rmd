@@ -2,8 +2,7 @@
 title: "**R Course:** <br> Homework 6 <br> *GLM*"
 author: "Lingyun Yang"
 
-output: 
-  html_document:
+output: github_document
     toc: true
     toc_depth: 3
     toc_float: true    
