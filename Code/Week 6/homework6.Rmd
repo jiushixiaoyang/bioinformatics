@@ -3,10 +3,6 @@ title: "**R Course:** <br> Homework 6 <br> *GLM*"
 author: "Lingyun Yang"
 
 output: github_document
-    toc: true
-    toc_depth: 3
-    toc_float: true    
-    number_sections: true
 ---
 # Part 1 - Tokyo Olympics
 ## Loading tha data
@@ -78,7 +74,6 @@ mod3 <- glm(Position ~ GDP,
 mod4 <- glm(Position ~ GDP, 
             data=medal_gdp,
             family = gaussian(link = "inverse"))
-
 # compare the models
 AIC_mods <- AIC(mod1,
                 mod2,
@@ -87,7 +82,6 @@ AIC_mods <- AIC(mod1,
 AIC_mods 
 # rank them by AIC using the order() function
 AIC_mods[order(AIC_mods$AIC),]
-
 summary(mod3)
 ```                        
 GDP has a very significant impact on medal rankings
@@ -123,6 +117,7 @@ plot(mod7) # conforms to the assumptions of a gaussian distribution
 ```{r}
 summary(mod7)
 ```
-There is an overall effect of Petal.Length on Petal.Width and also an overall effect of Species on Petal.Width.
-There is no difference in the magnitude of the Petal.Length on Petal.Width between different species
 
+There is an overall effect of Petal.Length on Petal.Width and also an overall effect of Species on Petal.Width.
+
+There is no difference in the magnitude of the Petal.Length on Petal.Width between different species
