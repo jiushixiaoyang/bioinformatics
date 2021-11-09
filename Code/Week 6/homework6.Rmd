@@ -1,0 +1,129 @@
+---
+title: "**R Course:** <br> Homework 6 <br> *GLM*"
+author: "Lingyun Yang"
+
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true    
+    number_sections: true
+---
+# Part 1 - Tokyo Olympics
+## Loading tha data
+
+load vroom into R session (only need to do this once)
+```{r}
+library(vroom)
+```
+
+use vroom to read in some data from github
+```{r}
+medal_dat <- vroom("https://raw.githubusercontent.com/chrit88/Bioinformatics_data/master/Workshop%205/Tokyo%202021%20medals.csv")
+```
+
+## Loading GDP of the countries
+
+```{r}
+library(wbstats)
+library(lubridate)
+gdp_dat <- wb_data(indicator = "NY.GDP.MKTP.CD",
+                    start_date = 2020)
+```
+
+## Merging data
+### Corresponding country names
+```{r}
+library(countrycode)
+medal_dat$code <- countrycode(medal_dat$Country, origin = 'country.name', destination = 'iso3c')
+# correct china and add kosovo
+medal_dat$code[2] <- "CHN"
+medal_dat$code[41] <- "XKX" ##why this country can't be translate into iso3c?
+```
+### Adding a position number
+```{r}
+medal_dat$Position <- 1:nrow(medal_dat)
+```
+### Merging GDP data into metal table
+rename the 5th column(population) so it works with the following code,and join the two data sets:
+```{r}
+names(gdp_dat)[5] <- "GDP"
+library(tidyverse)
+medal_gdp <- left_join(medal_dat,
+                         gdp_dat %>% select(iso3c, GDP),
+                         by = c("code" = "iso3c"))
+```
+
+## Visualise the relationship between GDP and position
+```{r}
+p1 <- ggplot(medal_gdp, aes(x=GDP, y=Position)) + 
+  geom_point() + 
+  theme_bw()
+p1
+```
+## Fitting a glm
+```{r}
+# fit a glm with a gaussian distribution
+mod1 <- glm(Position ~ GDP, 
+            data=medal_gdp,
+            family = "gaussian")
+# fit a glm with a poisson distribution
+mod2 <- glm(Position ~ GDP, 
+            data=medal_gdp,
+            family = "poisson")
+# fit a glm with a gaussian distribution with a log link
+mod3 <- glm(Position ~ GDP, 
+            data=medal_gdp,
+            family = gaussian(link = "log"))
+# we could also try a guassian model with an inverse link
+mod4 <- glm(Position ~ GDP, 
+            data=medal_gdp,
+            family = gaussian(link = "inverse"))
+
+# compare the models
+AIC_mods <- AIC(mod1,
+                mod2,
+                mod3,
+                mod4)
+AIC_mods 
+# rank them by AIC using the order() function
+AIC_mods[order(AIC_mods$AIC),]
+
+summary(mod3)
+```                        
+GDP has a very significant impact on medal rankings
+
+# Part 2 - Iris with multiple predictors
+## Visualise the data
+```{r}
+##load the data
+data(iris)
+##visualise the data
+iris1 <- ggplot(iris, aes(x = Petal.Length, y = Petal.Width)) + 
+  geom_jitter(aes(col = Species)) +
+  theme_bw()
+iris1
+```
+## Fitting glm with different models and check the models
+```{r}
+# fit a glm with a gaussian distribution
+mod5 <- glm(Petal.Width ~ Petal.Length*Species, 
+            data = iris,
+            family = "gaussian")
+plot(mod5) # not conforms to the assumptions of a gaussian distribution
+# fit a glm with a poisson distribution
+mod6 <- glm(log10(Petal.Width) ~ Petal.Length*Species, 
+            data = iris,)
+plot(mod6) # not conforms to the assumptions of a gaussian distribution
+# fit a glm with a gaussian distribution with a log link
+mod7 <- glm(sqrt(Petal.Width) ~ Petal.Length*Species, 
+            data = iris)
+plot(mod7) # conforms to the assumptions of a gaussian distribution
+```
+## Summarise the model outputs
+```{r}
+summary(mod7)
+```
+There is an overall effect of Petal.Length on Petal.Width and also an overall effect of Species on Petal.Width.
+There is no difference in the magnitude of the Petal.Length on Petal.Width between different species
+
